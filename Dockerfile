@@ -2,9 +2,13 @@ FROM python:3.9-slim
 
 WORKDIR /app
 
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
-COPY ./src .
+COPY pyproject.toml .
 
-CMD ["python", "main.py"]
+RUN mkdir ./src && pip install --no-cache-dir --upgrade pip setuptools && pip install --no-cache-dir -e .
+
+COPY ./src ./src
+
+CMD ["main"]

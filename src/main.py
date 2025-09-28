@@ -1,7 +1,8 @@
+import cowsay
 
 
 def main():
-    print("Hello World")
+    cowsay.cow("Hello World!")
 
 
 if __name__ == "__main__":
