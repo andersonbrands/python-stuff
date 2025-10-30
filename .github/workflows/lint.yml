@@ -1,0 +1,36 @@
+name: Lint
+
+on:
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9.24'
+
+      - name: Update pip and setuptools
+        run: python -m pip install --upgrade pip setuptools
+        shell: bash
+
+      - name: Install requirements
+        run: python -m pip install .[dev]
+        shell: bash
+
+      - name: Run flake8
+        run: flake8 .
+        shell: bash
+
+      - name: Run black
+        run: black . --check
+        shell: bash
+
+      - name: Run isort
+        run: isort . --check-only
+        shell: bash
