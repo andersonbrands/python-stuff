@@ -5,16 +5,18 @@ if ! hash python3 &> /dev/null; then
   exit 1
 fi
 
-VENV_DIR=$(mktemp -d)
+VENV_DIR=$(mktemp -d -p /tmp venv-XXXXXX)
 
 python3 -m venv "$VENV_DIR"
 
 source "$VENV_DIR"/bin/activate
 
-pip install --no-cache-dir --upgrade pip setuptools
+pip install --upgrade pip setuptools
 
-pip install pre-commit==4.3.0
+pip install ".[dev]"
 
-pre-commit install --install-hooks
+flake8 .
+black .
+isort .
 
 deactivate
